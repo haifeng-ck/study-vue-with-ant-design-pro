@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    <todo-list></todo-list>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.component('todo-item', {
+        props: {
+            title: String,
+            del: {
+                type: Boolean,
+                default: false
+            }
+        },
+        template: `
+            <li>
+                <span v-if="!del">{{ title }}</span>
+                <span v-else style="text-decoration: line-through">{{ title }}</span>
+                <button v-if="!del" @click="handelClick">删除</button>
+            </li>
+        `,
+        data: function () {
+            return {}
+        },
+        methods: {
+            handelClick() {
+                console.log('点击了删除')
+                this.$emit('delete', this.title)
+            }
+        }
+    })
+
+    Vue.component('todo-list', {
+        template: `
+            <ol>
+                <todo-item
+                        v-for="item in list"
+                        :key="item.id"
+                        :title="item.title"
+                        :del="item.del"
+                        @delete="handleDelete"
+                ></todo-item>
+            </ol>
+        `,
+        data: function () {
+            return {
+                list: [
+                    {
+                        id: 1,
+                        title: '光绪',
+                        del: false
+                    },
+                    {
+                        id: 2,
+                        title: '慈禧',
+                        del: true
+                    },
+                    {
+                        id: 3,
+                        title: '荣中堂',
+                        del: false
+                    }
+                ]
+            }
+        },
+        methods: {
+            handleDelete(val) {
+                console.log('handleDelete', val)
+            }
+        }
+    })
+
+    var vm = new Vue({
+        el: '#app'
+    })
+</script>
+</body>
+</html>
