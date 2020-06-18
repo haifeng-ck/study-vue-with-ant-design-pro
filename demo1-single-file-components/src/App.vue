@@ -1,5 +1,10 @@
 <template>
     <div id="app">
+        <!-- v-model 仅仅是一个语法糖（简写形式） -->
+        <input v-model="message">
+        <!-- 去除 v-model 语法糖 -->
+        <input :value="message" @input="handelChange">
+        {{ message }}
         <todo-list>
             <!-- 使用默认插槽，可以省略外层 `template` 标签 -->
             <!--<template v-slot>-->
@@ -42,6 +47,7 @@
         },
         data() {
             return {
+                message: 'Hello World !',
                 list: [
                     {
                         id: 1,
@@ -64,6 +70,9 @@
         methods: {
             handleDelete(val) {
                 console.log('handleDelete', val)
+            },
+            handelChange(e) {
+                this.message = e.target.value
             }
         }
     }
